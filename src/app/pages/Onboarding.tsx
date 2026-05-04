@@ -67,14 +67,21 @@ export default function Onboarding() {
                 <button
                   key={option.value}
                   onClick={() => setTransportation(option.value)}
-                  className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 ${
+                  className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 cursor-pointer shadow-sm hover:shadow-md active:scale-[0.98] ${
                     transportation === option.value
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-green-500 bg-green-50 shadow-md"
+                      : "border-gray-200 hover:border-green-300 hover:bg-gray-50"
                   }`}
                 >
                   <span className="text-3xl">{option.icon}</span>
-                  <span className="font-medium text-gray-900">{option.label}</span>
+                  <span className="font-medium text-gray-900 flex-1">{option.label}</span>
+                  {transportation === option.value && (
+                    <span className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -102,14 +109,21 @@ export default function Onboarding() {
                 <button
                   key={option.value}
                   onClick={() => setDiet(option.value)}
-                  className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 ${
+                  className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 cursor-pointer shadow-sm hover:shadow-md active:scale-[0.98] ${
                     diet === option.value
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-green-500 bg-green-50 shadow-md"
+                      : "border-gray-200 hover:border-green-300 hover:bg-gray-50"
                   }`}
                 >
                   <span className="text-3xl">{option.icon}</span>
-                  <span className="font-medium text-gray-900">{option.label}</span>
+                  <span className="font-medium text-gray-900 flex-1">{option.label}</span>
+                  {diet === option.value && (
+                    <span className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -137,14 +151,21 @@ export default function Onboarding() {
                 <button
                   key={option.value}
                   onClick={() => setHousing(option.value)}
-                  className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 ${
+                  className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 cursor-pointer shadow-sm hover:shadow-md active:scale-[0.98] ${
                     housing === option.value
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-green-500 bg-green-50 shadow-md"
+                      : "border-gray-200 hover:border-green-300 hover:bg-gray-50"
                   }`}
                 >
                   <span className="text-3xl">{option.icon}</span>
-                  <span className="font-medium text-gray-900">{option.label}</span>
+                  <span className="font-medium text-gray-900 flex-1">{option.label}</span>
+                  {housing === option.value && (
+                    <span className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                  )}
                 </button>
               ))}
             </div>

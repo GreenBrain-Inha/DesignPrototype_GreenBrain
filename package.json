@@ -82,6 +82,7 @@
     }
   },
   "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "@tailwindcss/oxide"],
     "overrides": {
       "vite": "6.3.5"
     }

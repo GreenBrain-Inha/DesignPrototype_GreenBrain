@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, Link } from "react-router";
+import { useNavigate } from "react-router";
+import NavMenu from "../components/NavMenu";
 
 interface Message {
   id: string;
@@ -117,12 +118,7 @@ export default function Chat() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-3">
             <h1 className="text-xl font-bold text-gray-900">GreenBrain</h1>
-            <Link
-              to="/challenges/feed"
-              className="text-green-500 hover:text-green-600 font-medium text-sm"
-            >
-              챌린지 피드
-            </Link>
+            <NavMenu />
           </div>
 
           <div>
