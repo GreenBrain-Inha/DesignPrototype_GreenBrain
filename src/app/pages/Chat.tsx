@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 import NavMenu from "../components/NavMenu";
+import ChallengeModal from "../components/ChallengeModal";
 
 interface Message {
   id: string;
@@ -21,6 +22,7 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [tokens, setTokens] = useState(150);
   const [isLoading, setIsLoading] = useState(false);
+  const [showChallenge, setShowChallenge] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const maxTokens = 150;
@@ -134,9 +136,25 @@ export default function Chat() {
                 style={{ width: `${tokenPercentage}%` }}
               />
             </div>
+            <div className="flex justify-end mt-2">
+              <button
+                onClick={() => setShowChallenge(true)}
+                className="flex items-center gap-1.5 text-xs font-medium text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-full transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                챌린지에 참여하여 토큰 회복하기
+              </button>
+            </div>
           </div>
         </div>
       </header>
+
+      {showChallenge && (
+        <ChallengeModal onClose={() => setShowChallenge(false)} />
+      )}
 
       <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-4xl mx-auto space-y-4">
