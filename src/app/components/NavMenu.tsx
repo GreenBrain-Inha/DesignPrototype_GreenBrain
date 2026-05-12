@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router";
 
 type IconFn = (className: string) => React.ReactNode;
 
-const NAV_ITEMS: { to: string; label: string; icon: IconFn }[] = [
+const NAV_ITEMS: { to: string; label: string; shortLabel?: string; icon: IconFn }[] = [
   {
     to: "/chat",
     label: "채팅",
@@ -27,10 +27,21 @@ const NAV_ITEMS: { to: string; label: string; icon: IconFn }[] = [
   {
     to: "/challenges/feed",
     label: "챌린지 피드",
+    shortLabel: "피드",
     icon: (cls) => (
       <svg className={cls} fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
           d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+      </svg>
+    ),
+  },
+  {
+    to: "/profile",
+    label: "프로필",
+    icon: (cls) => (
+      <svg className={cls} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
     ),
   },
@@ -108,7 +119,7 @@ export default function NavMenu() {
             >
               {item.icon("w-6 h-6")}
               <span className={`text-[10px] font-medium leading-none ${active ? "text-green-600" : "text-gray-400"}`}>
-                {item.label}
+                {item.shortLabel ?? item.label}
               </span>
               {active && (
                 <span className="absolute top-0 w-8 h-0.5 rounded-full bg-green-500" />

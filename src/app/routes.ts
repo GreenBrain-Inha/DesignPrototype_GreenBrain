@@ -5,6 +5,7 @@ import Onboarding from "./pages/Onboarding";
 import Chat from "./pages/Chat";
 import Challenges from "./pages/Challenges";
 import ChallengeFeed from "./pages/ChallengeFeed";
+import Profile from "./pages/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
       { path: "chat", Component: Chat },
       { path: "challenges", Component: Challenges },
       { path: "challenges/feed", Component: ChallengeFeed },
+      { path: "profile", Component: Profile },
     ],
   },
 ]);
