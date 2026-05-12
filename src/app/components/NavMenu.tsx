@@ -37,7 +37,7 @@ const NAV_ITEMS: { to: string; label: string; shortLabel?: string; icon: IconFn 
   },
 ];
 
-export default function NavMenu() {
+export default function NavMenu({ hiddenOnDesktop = false }: { hiddenOnDesktop?: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -54,8 +54,8 @@ export default function NavMenu() {
 
   return (
     <>
-      {/* Desktop: hamburger dropdown (sm 이상에서만 표시) */}
-      <div className="relative hidden sm:block" ref={ref}>
+      {/* Desktop: hamburger dropdown (sm 이상에서만 표시, hiddenOnDesktop이면 숨김) */}
+      <div className={`relative ${hiddenOnDesktop ? "hidden" : "hidden sm:block"}`} ref={ref}>
         <button
           onClick={() => setOpen((v) => !v)}
           className="flex flex-col justify-center gap-1.5 w-9 h-9 items-center rounded-lg hover:bg-gray-100 transition-colors"

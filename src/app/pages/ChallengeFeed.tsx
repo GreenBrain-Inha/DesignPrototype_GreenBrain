@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Trash2 } from "lucide-react";
 import NavMenu from "../components/NavMenu";
+import SidebarLayout from "../components/SidebarLayout";
 
 interface FeedItem {
   id: string;
@@ -86,17 +87,21 @@ export default function ChallengeFeed() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+    <SidebarLayout>
+      {(toggleButton) => (
+    <div className="flex-1 flex flex-col overflow-hidden bg-gray-50">
+      <header className="bg-white border-b border-gray-200 flex-shrink-0 z-10">
         <div className="max-w-4xl mx-auto p-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">챌린지 피드</h1>
-            <NavMenu />
+          <div className="flex items-center gap-3">
+            {toggleButton}
+            <h1 className="text-2xl font-bold text-gray-900 flex-1">챌린지 피드</h1>
+            <NavMenu hiddenOnDesktop />
           </div>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto p-4 pb-20 sm:pb-4">
+      <div className="flex-1 overflow-y-auto">
+      <div className="max-w-4xl mx-auto p-4 pb-4">
         <div className="mb-6 bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
           <h2 className="text-xl font-bold mb-2">💚 커뮤니티와 함께하는 탄소 절감</h2>
           <p className="text-green-50">
@@ -202,6 +207,9 @@ export default function ChallengeFeed() {
           </div>
         )}
       </div>
+      </div>
     </div>
+      )}
+    </SidebarLayout>
   );
 }
