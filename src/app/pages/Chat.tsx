@@ -12,18 +12,15 @@ interface Message {
 
 export default function Chat() {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "welcome",
-      role: "assistant",
-      content: "안녕하세요! GreenBrain입니다. 무엇을 도와드릴까요?",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [tokens, setTokens] = useState(150);
   const [isLoading, setIsLoading] = useState(false);
   const [showChallenge, setShowChallenge] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const hasStarted = messages.length > 0;
+  const username = "환경지킴이";
 
   const maxTokens = 150;
   const tokenPercentage = (tokens / maxTokens) * 100;
@@ -156,6 +153,17 @@ export default function Chat() {
         <ChallengeModal onClose={() => setShowChallenge(false)} />
       )}
 
+      {!hasStarted ? (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+            <span className="text-4xl">🌱</span>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 leading-snug">
+            {username}님,<br />다시 오셨네요
+          </h2>
+          <p className="text-gray-400 mt-3 text-base">오늘도 함께 탄소를 줄여봐요</p>
+        </div>
+      ) : (
       <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-4xl mx-auto space-y-4">
           {messages.map((message) => (
@@ -207,6 +215,7 @@ export default function Chat() {
           <div ref={messagesEndRef} />
         </div>
       </div>
+      )}
 
       <div className="bg-white border-t border-gray-200 p-4">
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto flex gap-3">
@@ -214,7 +223,7 @@ export default function Chat() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="메시지를 입력하세요..."
+            placeholder={hasStarted ? "메시지를 입력하세요." : "오늘 어떤 도움을 드릴까요?"}
             disabled={tokens <= 0 || isLoading}
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none disabled:bg-gray-100"
           />
