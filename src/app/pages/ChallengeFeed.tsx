@@ -96,7 +96,7 @@ export default function ChallengeFeed() {
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-4xl mx-auto p-4 pb-20 sm:pb-4">
         <div className="mb-6 bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
           <h2 className="text-xl font-bold mb-2">💚 커뮤니티와 함께하는 탄소 절감</h2>
           <p className="text-green-50">
