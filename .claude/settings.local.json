@@ -4,7 +4,16 @@
       "Bash(pnpm vite *)",
       "PowerShell(Get-Command *)",
       "PowerShell(Get-ChildItem *)",
-      "PowerShell(npm install *)"
+      "PowerShell(npm install *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(pnpm dev *)",
+      "Bash(Get-ChildItem C:\\\\Users\\\\ices1\\\\web\\\\GreenBrain\\\\DesignPrototype_GreenBrain *)",
+      "Bash(Get-Content \"C:\\\\Users\\\\ices1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-ices1-web-GreenBrain-DesignPrototype-GreenBrain\\\\27954be2-418f-41db-999e-d7b94ea91ec2\\\\tasks\\\\bn2ra68rx.output\" -Wait)",
+      "Bash(Select-String -Pattern \"Local|error|Error|EADDRINUSE\")",
+      "Bash(Get-Content *)",
+      "Bash(git commit *)"
     ]
   }
 }
