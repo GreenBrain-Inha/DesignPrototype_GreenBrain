@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { Trash2 } from "lucide-react";
 import NavMenu from "../components/NavMenu";
 
 interface FeedItem {
@@ -12,6 +13,7 @@ interface FeedItem {
   likes: number;
   likedByMe: boolean;
   timestamp: string;
+  isOwner: boolean;
 }
 
 const mockFeedData: FeedItem[] = [
@@ -25,6 +27,7 @@ const mockFeedData: FeedItem[] = [
     likes: 12,
     likedByMe: false,
     timestamp: "2시간 전",
+    isOwner: true,
   },
   {
     id: "2",
@@ -36,6 +39,7 @@ const mockFeedData: FeedItem[] = [
     likes: 8,
     likedByMe: false,
     timestamp: "4시간 전",
+    isOwner: false,
   },
   {
     id: "3",
@@ -47,6 +51,7 @@ const mockFeedData: FeedItem[] = [
     likes: 15,
     likedByMe: true,
     timestamp: "6시간 전",
+    isOwner: false,
   },
   {
     id: "4",
@@ -58,6 +63,7 @@ const mockFeedData: FeedItem[] = [
     likes: 20,
     likedByMe: false,
     timestamp: "8시간 전",
+    isOwner: false,
   },
 ];
 
@@ -111,7 +117,18 @@ export default function ChallengeFeed() {
                     <p className="font-semibold text-gray-900">{item.username}</p>
                     <p className="text-sm text-gray-500">{item.timestamp}</p>
                   </div>
-                  <div className="text-2xl">{item.challengeIcon}</div>
+                  <div className="flex items-center gap-2">
+                    <div className="text-2xl">{item.challengeIcon}</div>
+                    {item.isOwner && (
+                      <button
+                        type="button"
+                        title="게시물 삭제"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <h3 className="font-medium text-gray-900 mb-2">
