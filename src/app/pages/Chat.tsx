@@ -1,8 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router";
-import NavMenu from "../components/NavMenu";
-import ChallengeModal from "../components/ChallengeModal";
-import SidebarLayout from "../components/SidebarLayout";
+import { useNavigate, Link } from "react-router";
 
 interface Message {
   id: string;
@@ -13,23 +10,31 @@ interface Message {
 
 export default function Chat() {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "welcome",
+      role: "assistant",
+      content: "안녕하세요! GreenBrain입니다. 무엇을 도와드릴까요?",
+    },
+  ]);
   const [input, setInput] = useState("");
   const [tokens, setTokens] = useState(150);
   const [isLoading, setIsLoading] = useState(false);
-  const [showChallenge, setShowChallenge] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const hasStarted = messages.length > 0;
-  const username = "환경지킴이";
   const maxTokens = 150;
   const tokenPercentage = (tokens / maxTokens) * 100;
 
   const getCarbonAnalogy = (carbonCost: number) => {
-    if (carbonCost <= 3) return { icon: "🚗", text: "자동차 약 10초 주행" };
-    if (carbonCost <= 5) return { icon: "💡", text: "LED 전구 약 30분 사용" };
-    if (carbonCost <= 7) return { icon: "📱", text: "스마트폰 충전 약 15%" };
-    return { icon: "🥤", text: "플라스틱 빨대 약 20개 생산" };
+    if (carbonCost <= 3) {
+      return { icon: "🚗", text: "자동차 약 10초 주행" };
+    } else if (carbonCost <= 5) {
+      return { icon: "💡", text: "LED 전구 약 30분 사용" };
+    } else if (carbonCost <= 7) {
+      return { icon: "📱", text: "스마트폰 충전 약 15%" };
+    } else {
+      return { icon: "🥤", text: "플라스틱 빨대 약 20개 생산" };
+    }
   };
 
   const getTokenColor = () => {
@@ -38,8 +43,12 @@ export default function Chat() {
     return "bg-red-500";
   };
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
   }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,7 +77,9 @@ export default function Chat() {
       setMessages((prev) => [...prev, aiMessage]);
       setTokens((prev) => {
         const newTokens = Math.max(0, prev - carbonCost);
-        if (newTokens === 0) setTimeout(() => navigate("/challenges"), 1000);
+        if (newTokens === 0) {
+          setTimeout(() => navigate("/challenges"), 1000);
+        }
         return newTokens;
       });
       setIsLoading(false);
@@ -81,8 +92,7 @@ export default function Chat() {
         <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
             <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">탄소 토큰 소진</h2>
@@ -102,133 +112,107 @@ export default function Chat() {
   }
 
   return (
-    <SidebarLayout>
-      {(toggleButton) => (
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* 헤더 */}
-          <header className="bg-white border-b border-gray-200 p-4 flex-shrink-0">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 mb-3">
-                {toggleButton}
-                <h1 className="text-xl font-bold text-gray-900 flex-1">GreenBrain</h1>
-                <NavMenu hiddenOnDesktop />
-              </div>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <header className="bg-white border-b border-gray-200 p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-3">
+            <h1 className="text-xl font-bold text-gray-900">GreenBrain</h1>
+            <Link
+              to="/challenges/feed"
+              className="text-green-500 hover:text-green-600 font-medium text-sm"
+            >
+              챌린지 피드
+            </Link>
+          </div>
 
-              {/* 탄소 토큰 바 */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">탄소 토큰</span>
-                  <span className={`text-sm font-bold ${tokens <= 30 ? "text-red-500" : "text-gray-900"}`}>
-                    {tokens} / {maxTokens} gCO₂eq
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-300 ${getTokenColor()}`}
-                    style={{ width: `${tokenPercentage}%` }}
-                  />
-                </div>
-                <div className="flex justify-end mt-2">
-                  <button
-                    onClick={() => setShowChallenge(true)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-full transition-colors"
-                  >
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                    </svg>
-                    챌린지에 참여하여 토큰 회복하기
-                  </button>
-                </div>
-              </div>
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">탄소 토큰</span>
+              <span className={`text-sm font-bold ${tokens <= 30 ? "text-red-500" : "text-gray-900"}`}>
+                {tokens} / {maxTokens} gCO₂eq
+              </span>
             </div>
-          </header>
-
-          {showChallenge && (
-            <ChallengeModal onClose={() => setShowChallenge(false)} />
-          )}
-
-          {/* 메시지 영역 */}
-          {!hasStarted ? (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                <span className="text-4xl">🌱</span>
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 leading-snug">
-                {username}님,<br />다시 오셨네요
-              </h2>
-              <p className="text-gray-400 mt-3 text-base">오늘도 함께 탄소를 줄여봐요</p>
-            </div>
-          ) : (
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="max-w-4xl mx-auto space-y-4">
-                {messages.map((message) => (
-                  <div key={message.id}>
-                    <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                      <div
-                        className={`max-w-[70%] rounded-2xl p-4 ${
-                          message.role === "user"
-                            ? "bg-green-500 text-white"
-                            : "bg-white border border-gray-200"
-                        }`}
-                      >
-                        <p className="whitespace-pre-wrap">{message.content}</p>
-                      </div>
-                    </div>
-
-                    {message.carbonCost && (
-                      <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mt-2`}>
-                        <div className="max-w-[70%] bg-gray-100 rounded-lg px-3 py-2 flex items-center gap-2">
-                          <span className="text-lg">{getCarbonAnalogy(message.carbonCost).icon}</span>
-                          <div className="flex-1">
-                            <p className="text-xs text-gray-600">{getCarbonAnalogy(message.carbonCost).text}</p>
-                            <p className="text-xs text-gray-500 mt-0.5">{message.carbonCost} gCO₂eq 배출</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-2xl p-4">
-                      <div className="flex gap-2">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div ref={messagesEndRef} />
-              </div>
-            </div>
-          )}
-
-          {/* 입력 바 */}
-          <div className="bg-white border-t border-gray-200 p-4 flex-shrink-0">
-            <form onSubmit={handleSubmit} className="max-w-4xl mx-auto flex gap-3">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={hasStarted ? "메시지를 입력하세요." : "오늘 어떤 도움을 드릴까요?"}
-                disabled={tokens <= 0 || isLoading}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none disabled:bg-gray-100"
+            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div
+                className={`h-full transition-all duration-300 ${getTokenColor()}`}
+                style={{ width: `${tokenPercentage}%` }}
               />
-              <button
-                type="submit"
-                disabled={!input.trim() || tokens <= 0 || isLoading}
-                className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors"
-              >
-                전송
-              </button>
-            </form>
+            </div>
           </div>
         </div>
-      )}
-    </SidebarLayout>
+      </header>
+
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="max-w-4xl mx-auto space-y-4">
+          {messages.map((message) => (
+            <div key={message.id}>
+              <div
+                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[70%] rounded-2xl p-4 ${
+                    message.role === "user"
+                      ? "bg-green-500 text-white"
+                      : "bg-white border border-gray-200"
+                  }`}
+                >
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+                </div>
+              </div>
+
+              {message.carbonCost && (
+                <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mt-2`}>
+                  <div className="max-w-[70%] bg-gray-100 rounded-lg px-3 py-2 flex items-center gap-2">
+                    <span className="text-lg">{getCarbonAnalogy(message.carbonCost).icon}</span>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-600">
+                        {getCarbonAnalogy(message.carbonCost).text}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {message.carbonCost} gCO₂eq 배출
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-white border border-gray-200 rounded-2xl p-4">
+                <div className="flex gap-2">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      <div className="bg-white border-t border-gray-200 p-4">
+        <form onSubmit={handleSubmit} className="max-w-4xl mx-auto flex gap-3">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="메시지를 입력하세요..."
+            disabled={tokens <= 0 || isLoading}
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none disabled:bg-gray-100"
+          />
+          <button
+            type="submit"
+            disabled={!input.trim() || tokens <= 0 || isLoading}
+            className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors"
+          >
+            전송
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

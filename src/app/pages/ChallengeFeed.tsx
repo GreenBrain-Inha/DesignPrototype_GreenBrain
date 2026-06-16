@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { Trash2 } from "lucide-react";
-import NavMenu from "../components/NavMenu";
-import SidebarLayout from "../components/SidebarLayout";
 
 interface FeedItem {
   id: string;
@@ -14,7 +11,6 @@ interface FeedItem {
   likes: number;
   likedByMe: boolean;
   timestamp: string;
-  isOwner: boolean;
 }
 
 const mockFeedData: FeedItem[] = [
@@ -28,7 +24,6 @@ const mockFeedData: FeedItem[] = [
     likes: 12,
     likedByMe: false,
     timestamp: "2시간 전",
-    isOwner: true,
   },
   {
     id: "2",
@@ -40,7 +35,6 @@ const mockFeedData: FeedItem[] = [
     likes: 8,
     likedByMe: false,
     timestamp: "4시간 전",
-    isOwner: false,
   },
   {
     id: "3",
@@ -52,7 +46,6 @@ const mockFeedData: FeedItem[] = [
     likes: 15,
     likedByMe: true,
     timestamp: "6시간 전",
-    isOwner: false,
   },
   {
     id: "4",
@@ -64,7 +57,6 @@ const mockFeedData: FeedItem[] = [
     likes: 20,
     likedByMe: false,
     timestamp: "8시간 전",
-    isOwner: false,
   },
 ];
 
@@ -87,21 +79,22 @@ export default function ChallengeFeed() {
   };
 
   return (
-    <SidebarLayout>
-      {(toggleButton) => (
-    <div className="flex-1 flex flex-col overflow-hidden bg-gray-50">
-      <header className="bg-white border-b border-gray-200 flex-shrink-0 z-10">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto p-4">
-          <div className="flex items-center gap-3">
-            {toggleButton}
-            <h1 className="text-2xl font-bold text-gray-900 flex-1">챌린지 피드</h1>
-            <NavMenu hiddenOnDesktop />
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-900">챌린지 피드</h1>
+            <Link
+              to="/chat"
+              className="text-green-500 hover:text-green-600 font-medium"
+            >
+              채팅
+            </Link>
           </div>
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto">
-      <div className="max-w-4xl mx-auto p-4 pb-4">
+      <div className="max-w-4xl mx-auto p-4">
         <div className="mb-6 bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
           <h2 className="text-xl font-bold mb-2">💚 커뮤니티와 함께하는 탄소 절감</h2>
           <p className="text-green-50">
@@ -122,18 +115,7 @@ export default function ChallengeFeed() {
                     <p className="font-semibold text-gray-900">{item.username}</p>
                     <p className="text-sm text-gray-500">{item.timestamp}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-2xl">{item.challengeIcon}</div>
-                    {item.isOwner && (
-                      <button
-                        type="button"
-                        title="게시물 삭제"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
+                  <div className="text-2xl">{item.challengeIcon}</div>
                 </div>
 
                 <h3 className="font-medium text-gray-900 mb-2">
@@ -207,9 +189,6 @@ export default function ChallengeFeed() {
           </div>
         )}
       </div>
-      </div>
     </div>
-      )}
-    </SidebarLayout>
   );
 }
